@@ -41,7 +41,9 @@
         var setting_time = 60;
 
         function start() {
-            // Dateオブジェクトを作成
+            if (getUrlQueries().gameTime !== undefined) {
+                game_time = getUrlQueries().gameTime;
+            }
             systemState = 1;
             var date = new Date();
             startTime = date.getTime();
@@ -49,6 +51,9 @@
         }
 
         function setting() {
+            if (getUrlQueries().settingTime !== undefined) {
+                setting_time = getUrlQueries().settingTime;
+            }
             playSound("whistle");
             var date = new Date();
             startTime = date.getTime();
@@ -195,6 +200,27 @@
             }
 
         }
+
+
+        function getUrlQueries() {
+            var queryStr = window.location.search.slice(1);  // 文頭?を除外
+            queries = {};
+
+            // クエリがない場合は空のオブジェクトを返す
+            if (!queryStr) {
+                return queries;
+            }
+
+            // クエリ文字列を & で分割して処理
+            queryStr.split('&').forEach(function (queryStr) {
+                // = で分割してkey,valueをオブジェクトに格納
+                var queryArr = queryStr.split('=');
+                queries[queryArr[0]] = queryArr[1];
+            });
+
+            return queries;
+        }
+
     </script>
 </head>
 
